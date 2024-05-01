@@ -1,0 +1,25 @@
+{% extends 'base.jinja' %}
+
+{% block title %} Create a user {% endblock %} {# TODO: What is this doing? #}
+
+{% block content %}
+
+    <div class="container">
+
+        <div class="row">
+            <h1 class="pt-4 mb-3 text-center">{{ user }}</h1>
+
+                {# FIXME: this needs to redirect corrently #}
+            <button class="btn btn-primary btn-lg w-100">
+                Edit
+            </button>
+
+            {# FIXME: this needs to del from db #}
+            <button class="btn btn-primary btn-lg w-100">
+                Delete
+            </button>
+        </div>
+
+  </div>
+
+{% endblock %}
