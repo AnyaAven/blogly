@@ -79,7 +79,8 @@ class Studio(db.Model):
         db.Date,
     )
 ```
-- ***Create a Generate full name method***
+2. Create a method within user model class
+- ***Create a method to  get_full_name ***
 
 ```python
         class Movie(db.Model):  # ...
@@ -89,4 +90,12 @@ class Studio(db.Model):
                 return self.rating in ('G', 'PG')
 ```
 
-2. Create a method with user model class
+
+3. Create Flask App (app.py)
+- Create the DB
+```shell
+createdb sqla_movies #change name
+```
+- Import the user model
+- Create the tables for user model
+    - demo/seed.py (insert data )
