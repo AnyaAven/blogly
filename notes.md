@@ -91,7 +91,6 @@ class Studio(db.Model):
 ```
 
 
-3. Create Flask App (app.py)
 - Create the DB
 ```shell
 createdb sqla_movies #change name
@@ -99,6 +98,12 @@ createdb sqla_movies #change name
 - Import the user model
 - Create the tables for user model
     - demo/seed.py (insert data )
+
+
+3. Create Flask App (app.py)
+
+
+
 
 
 
