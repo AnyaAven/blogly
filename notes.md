@@ -99,3 +99,9 @@ createdb sqla_movies #change name
 - Import the user model
 - Create the tables for user model
     - demo/seed.py (insert data )
+
+
+
+
+## Concerns
+- Who is handling the caps of first or last name? UI, models.py, or app.py?
