@@ -7,10 +7,10 @@
     <div class="container">
 
         <div class="row">
-
-            <img src="{{ user_image }}" alt="{{ user_full_name }}'s profile picture" height="200" width="200">
-            <h1 class="pt-4 mb-3 text-center">{{ user_full_name }}</h1>
-
+                <div>
+                 <img src="{{ user_image }}" alt="{{ user_full_name }}'s profile picture" class="img-thumbnail">
+                  <h1 class="pt-4 mb-3 text-center">{{ user_full_name }}</h1>
+                </div>
             <a href="/users/{{ user_id }}/edit" class="btn btn-primary btn-lg w-100">
                 Edit
             </a>
