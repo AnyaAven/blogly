@@ -7,23 +7,20 @@
     <div class="container">
 
         <div class="row">
+
+            <img src="{{ user_image }}" alt="{{ user_full_name }}'s profile picture" height="200" width="200">
             <h1 class="pt-4 mb-3 text-center">{{ user_full_name }}</h1>
 
-                {# FIXME: this needs to redirect corrently #}
-            <button class="btn btn-primary btn-lg w-100">
+            <a href="/users/{{ user_id }}/edit" class="btn btn-primary btn-lg w-100">
                 Edit
-            </button>
+            </a>
 
-            {# FIXME: this needs to del from db #}
-            <button class="btn btn-primary btn-lg w-100">
+            {# FIXME: can an anchor tag be a post? We used submit to fix this. Does it work? #}
+            <a href="/users/{{ user_id }}/delete" type="submit" class="btn btn-primary btn-lg w-100">
                 Delete
-            </button>
+            </a>
         </div>
 
   </div>
 
 {% endblock %}
-
-
-{#<a href="/search?q=lemurs">Search for lemurs!</a> // GET
-<a href="/users/joel">All about Joel</a> #}
