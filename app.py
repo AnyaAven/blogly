@@ -71,3 +71,19 @@ def add_user():
 
     return redirect("/users")
 
+@app.get("/users/<int:user_id>")
+def show_user(user_id):
+    """Shows information about the given user"""
+
+    #search for the user instance by id
+    q_user = db.select(User).where(User.id == user_id)
+    user_detail = dbx(q_user).scalars().all()
+    # send the info to user_detail page
+    user_full_name = user_detail.get_full_name()
+    user_image = user_detail.image_url
+
+
+    return render_template(
+        "user_detail.jinja",
+        user_full_name=user_full_name,
+        user_image=user_image)
