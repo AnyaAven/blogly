@@ -4,9 +4,8 @@
   <h1>Users</h1>
 
   <ul>
-  {# FIXME: are we passing users correctly? #}
-    {% for user in user_full_names %}
-      <li><a href="/Users/{{ user_ids }}">{{ user }}</a></li> {# FIXME: don't pass in just user_ids the array #}
+    {% for user_id in user_mapping %}
+      <li><a href="/Users/{{ user_id }}">{{ user_mapping[user_id] }}</a></li>
     {% endfor %}
   </ul>
 
