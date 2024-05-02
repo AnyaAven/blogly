@@ -57,7 +57,9 @@ def display_new_user_form():
 
 @app.post("/users/new")
 def add_user():
-    """ Add new user to the database and redirect to /users """
+    """ Add new user to the database and redirect to /users
+    If user does not provide a image url, add a default url image
+    """
 
     fname = request.form['first_name']
     lname = request.form['last_name']
@@ -123,4 +125,14 @@ def edit_user(user_id):
 
 @app.post("/users/<int:user_id>/delete")
 def delete_user(user_id):
-    """ Doc """
+    """ Delete user from database and redirect to /users """
+
+    q_user = db.select(User).where(User.id == user_id)
+    user_detail = dbx(q_user).scalars().one()
+
+    db.session.delete(user_detail)
+
+    db.session.commit()
+
+    return redirect("/users")
+
