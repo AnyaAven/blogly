@@ -60,7 +60,7 @@ def add_user():
     lname = request.form['last_name']
 
     # Use user's image url or the default img url
-    img_url = request.form.get("image_url", "https://via.placeholder.com/250")
+    img_url = request.form.get("image_url", "https://via.placeholder.com/250") # FIXME: global URL
 
 
     new_user = User(first_name=fname, last_name=lname, image_url=img_url)
