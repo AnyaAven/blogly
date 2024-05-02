@@ -15,10 +15,13 @@
                 Edit
             </a>
 
-            {# FIXME: can an anchor tag be a post? We used submit to fix this. Does it work? #}
-            <a href="/users/{{ user_id }}/delete" type="submit" class="btn btn-primary btn-lg w-100">
-                Delete
-            </a>
+            <form action="/users/{{ user_id }}/delete" method="post">
+                 {# FIXME: can an anchor tag be a post? We used submit to fix this. Does it work? #}
+                <button  class="btn btn-primary btn-lg w-100">
+                    Delete
+                </button>
+            </form>
+
         </div>
 
   </div>
