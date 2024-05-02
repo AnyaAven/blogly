@@ -79,5 +79,44 @@ class UserViewTestCase(TestCase):
             self.assertIn("Test2_last", html)
             self.assertIn("<!-- Test comment for user_listing -->", html)
 
+    def test_editing_users_form(self):
+        with app.test_client() as c:
+            resp = c.get(f"/users/{self.user_id}/edit")
+            self.assertEqual(resp.status_code, 200)
+            html = resp.get_data(as_text=True)
+            self.assertIn("<!-- Test comment for edit_user_form -->", html)
+
+    def test_editing_user(self):
+        with app.test_client() as c:
+            d = {
+                "first_name": "Test_first_EDITED",
+                "last_name": "Test_last_EDITED",
+                "image_url": "",
+            }
+
+            resp = c.post(
+                f"/users/{self.user_id}/edit",
+                data=d,
+                follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Test_first_EDITED", html)
+            self.assertIn("Test_last_EDITED", html)
+            self.assertIn("<!-- Test comment for user_listing -->", html)
+
+    def test_deleting_user(self):
+        with app.test_client() as c:
+            #ensure id doesn't exist in database/main page
+            resp = c.post(
+                f"/users/{self.user_id}/delete",
+                follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertNotIn("test1_first", html)
+            self.assertNotIn("test1_last", html)
+            self.assertIn("<!-- Test comment for user_listing -->", html)
+
 
 
