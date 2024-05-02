@@ -6,7 +6,7 @@ os.environ["FLASK_DEBUG"] = "0"
 from unittest import TestCase
 
 from app import app
-from models import db, dbx, DEFAULT_IMAGE_URL, User
+from models import db, dbx, User
 
 # Make Flask errors be real errors, rather than HTML pages with error info
 app.config['TESTING'] = True
@@ -37,7 +37,7 @@ class UserViewTestCase(TestCase):
         test_user = User(
             first_name="test1_first",
             last_name="test1_last",
-            image_url=None,
+            image_url=None
         )
 
         db.session.add(test_user)
@@ -61,3 +61,23 @@ class UserViewTestCase(TestCase):
             html = resp.get_data(as_text=True)
             self.assertIn("test1_first", html)
             self.assertIn("test1_last", html)
+            self.assertIn("<!-- Test comment for user_listing -->", html)
+
+    def test_adding_user(self):
+        with app.test_client() as c:
+            d = {
+                "first_name": "Test2_first",
+                "last_name": "Test2_last",
+                "image_url": "",
+            }
+
+            resp = c.post("/users/new", data=d, follow_redirects=True)
+            html = resp.get_data(as_text=True)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertIn("Test2_first", html)
+            self.assertIn("Test2_last", html)
+            self.assertIn("<!-- Test comment for user_listing -->", html)
+
+
+
