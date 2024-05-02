@@ -5,8 +5,8 @@
 
   <ul>
   {# FIXME: are we passing users correctly? #}
-    {% for user in users %}
-      <li><a href="/Users/{{ user.id }}">{{ user }}</a></li>
+    {% for user in user_full_names %}
+      <li><a href="/Users/{{ user_ids }}">{{ user }}</a></li>
     {% endfor %}
   </ul>
 
