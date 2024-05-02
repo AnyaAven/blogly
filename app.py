@@ -7,7 +7,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from models import db, dbx, User
 
-DEFAULT_URL = "https://via.placeholder.com/250" # TODO: Move to user model
+DEFAULT_URL = "https://via.placeholder.com/250"  # TODO: Move to user model
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
@@ -21,6 +21,7 @@ app.config['SECRET_KEY'] = os.environ.get(
 print("secret key =", app.config['SECRET_KEY'])
 debug = DebugToolbarExtension(app)
 
+
 @app.get("/")
 def redirect_to_users():
     """ Redirect to users
@@ -29,6 +30,7 @@ def redirect_to_users():
     """
 
     return redirect("/users")
+
 
 @app.get("/users")
 def display_users_list():
@@ -55,6 +57,7 @@ def display_new_user_form():
 
     return render_template("new_user_form.jinja")
 
+
 @app.post("/users/new")
 def add_user():
     """ Add new user to the database and redirect to /users
@@ -74,11 +77,12 @@ def add_user():
 
     return redirect("/users")
 
+
 @app.get("/users/<int:user_id>")
 def show_user(user_id):
     """Shows information about the given user"""
 
-    #search for the user instance by id
+    # search for the user instance by id
     q_user = db.select(User).where(User.id == user_id)
     user_detail = dbx(q_user).scalars().one()
     # send the info to user_detail page
@@ -91,7 +95,8 @@ def show_user(user_id):
         user_full_name=user_full_name,
         user_image=user_image,
         user_id=user_id
-        )
+    )
+
 
 @app.get("/users/<int:user_id>/edit")
 def show_edit_user_form(user_id):
@@ -101,6 +106,7 @@ def show_edit_user_form(user_id):
         "edit_user_form.jinja",
         user_id=user_id
     )
+
 
 @app.post("/users/<int:user_id>/edit")
 def edit_user(user_id):
@@ -113,8 +119,7 @@ def edit_user(user_id):
     last_name = request.form["last_name"] or user_detail.last_name
     img_url = request.form["image_url"] or user_detail.image_url
 
-
-    #update the DB with updated user info
+    # update the DB with updated user info
     user_detail.first_name = first_name
     user_detail.last_name = last_name
     user_detail.image_url = img_url
@@ -135,4 +140,3 @@ def delete_user(user_id):
     db.session.commit()
 
     return redirect("/users")
-
