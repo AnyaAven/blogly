@@ -34,16 +34,17 @@ def display_users_list():
 
     q_user = db.select(User)
     users = dbx(q_user).scalars().all()
-    # ['Alice Chang','A.A', ...]
-    user_full_names = [u.get_full_name() for u in users]
+    # [<User 1>, <User 2> ...]
 
-    user_ids = [u.id for u in users]
-    # [1, 2]
+    user_mapping = {}
+
+    # access list of users, pull out id and name for each user instance
+    for user in users:
+        user_mapping[user.id] = user.get_full_name()
 
     return render_template(
         "user_listing.jinja",
-        user_ids=user_ids,
-        user_full_names=user_full_names)
+        user_mapping=user_mapping)
 
 
 @app.get("/users/new")
