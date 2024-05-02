@@ -132,10 +132,8 @@ def edit_user(user_id):
 def delete_user(user_id):
     """ Delete user from database and redirect to /users """
 
-    q_user = db.select(User).where(User.id == user_id)
-    user_detail = dbx(q_user).scalars().one()
-
-    db.session.delete(user_detail)
+    user = db.get_or_404(User, user_id) # TODO: Question: 404 here? post method not allowed
+    db.session.delete(user)
 
     db.session.commit()
 
