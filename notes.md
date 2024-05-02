@@ -103,7 +103,11 @@ createdb sqla_movies #change name
 3. Create Flask App (app.py)
 
 
+4. Testing:
 
+- editing user - form/updating db done
+- deleting user
+- redirects to user list
 
 
 
