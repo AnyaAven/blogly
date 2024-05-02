@@ -22,11 +22,14 @@ debug = DebugToolbarExtension(app)
 
 @app.get("/")
 def homepage():
-    """Return movie list."""
+    """Returns to list of users"""
 
-    q_movies = db.select(Movie)
-    movies = dbx(q_movies).scalars().all()
+    q_user = db.select(User)
+    users = dbx(q_user).scalars().all()
+    # ['Alice Chang','A.A', ...]
 
-    q_studios = db.select(Studio)
-    studios = dbx(q_studios).scalars().all()
-    return render_template("movies_list.jinja", movies=movies, studios=studios)
+    user_full_names = [u.get_full_name() for u in users]
+
+    return render_template(
+        "user_listing.jinja",
+        user_full_names=user_full_names)
