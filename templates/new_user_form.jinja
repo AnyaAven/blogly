@@ -7,16 +7,16 @@
   <h1 class="pt-4 mb-3 text-center">Create a user</h1>
 
   <div class="ms-3 me-3">
-    <form action="/" class="pb-4"> {# FIXME: action #}
+    <form action="/users/new" method="POST" class="pb-4">
 
       <div class="mb-3 row">
 
         <label class="col-5 col-form-label text-end">First Name</label>
         <div class="col-7">
             <input
-            name="{{first_name}}"
+            name="first_name"
             required
-            aria-label="{{first_name}}"
+            aria-label="first_name"
             class="form-control">
 
         </div>
@@ -24,9 +24,9 @@
          <label class="col-5 col-form-label text-end">Last Name</label>
         <div class="col-7">
             <input
-            name="{{last_name}}"
+            name="last_name"
             required
-            aria-label="{{last_name}}"
+            aria-label="last_name"
             class="form-control">
 
         </div>
@@ -34,8 +34,8 @@
          <label class="col-5 col-form-label text-end">Image URL</label>
         <div class="col-7">
             <input
-            name="{{image_url}}"
-            aria-label="{{image_url}}"
+            name="image_url"
+            aria-label="image_url"
             class="form-control">
 
         </div>
