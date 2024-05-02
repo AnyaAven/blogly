@@ -34,7 +34,7 @@ def redirect_to_users():
 def display_users_list():
     """Returns to list of users"""
 
-    q_user = db.select(User)
+    q_user = db.select(User).order_by(User.first_name)
     users = dbx(q_user).scalars().all()
     # [<User 1>, <User 2> ...]
 
@@ -90,6 +90,36 @@ def show_user(user_id):
         user_image=user_image,
         user_id=user_id
         )
+
+@app.get("/users/<int:user_id>/edit")
+def show_edit_user_form(user_id):
+    """Show the edit page for a user."""
+
+    return render_template(
+        "edit_user_form.jinja",
+        user_id=user_id
+    )
+
+@app.post("/users/<int:user_id>/edit")
+def edit_user(user_id):
+    """Get values from user inputs from edit user form."""
+    q_user = db.select(User).where(User.id == user_id)
+    user_detail = dbx(q_user).scalars().one()
+
+    # if value is blank, leave as is
+    first_name = request.form["first_name"] or user_detail.first_name
+    last_name = request.form["last_name"] or user_detail.last_name
+    img_url = request.form["image_url"] or user_detail.image_url
+
+
+    #update the DB with updated user info
+    user_detail.first_name = first_name
+    user_detail.last_name = last_name
+    user_detail.image_url = img_url
+    db.session.commit()
+
+    return redirect("/users")
+
 
 @app.post("/users/<int:user_id>/delete")
 def delete_user(user_id):
