@@ -7,6 +7,8 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from models import db, dbx, User
 
+DEFAULT_URL = "https://via.placeholder.com/250" # TODO: Move to user model
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     "DATABASE_URL", 'postgresql:///blogly')
@@ -61,8 +63,7 @@ def add_user():
     lname = request.form['last_name']
 
     # Use user's image url or the default img url
-    img_url = request.form.get("image_url", "https://via.placeholder.com/250") # FIXME: global URL
-
+    img_url = request.form["image_url"] or DEFAULT_URL
 
     new_user = User(first_name=fname, last_name=lname, image_url=img_url)
 
