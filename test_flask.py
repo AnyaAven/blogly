@@ -68,7 +68,7 @@ class UserViewTestCase(TestCase):
             d = {
                 "first_name": "Test2_first",
                 "last_name": "Test2_last",
-                "image_url": "",
+                "image_url": "", # FIXME: what about default image?
             }
 
             resp = c.post("/users/new", data=d, follow_redirects=True)
@@ -112,6 +112,21 @@ class UserViewTestCase(TestCase):
                 f"/users/{self.user_id}/delete",
                 follow_redirects=True)
             html = resp.get_data(as_text=True)
+
+            # FIXME: Should test the the database WHILE testing the HTML
+            # db.select() works
+            # Everything that works in SQLA can be done here!
+            # It is a good idea to test the full journey
+            # We don't want to seperate the DB and the UI
+            # We want to test both at once.
+            # Eventually the classes will be seperated more
+            # EX: DeleteUserViewTest
+            # EX: EditUserViewTest
+            # View Function, saying view test refers to testing the route
+
+            # FIXME: Add the negative test
+            # What if the firstname submitted was 2000 chars long?
+            # What if someone tries to go to a user that doesn't exist? 404!
 
             self.assertEqual(resp.status_code, 200)
             self.assertNotIn("test1_first", html)

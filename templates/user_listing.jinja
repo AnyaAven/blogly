@@ -2,10 +2,12 @@
 {% block content %}
 
     <!-- Test comment for user_listing -->
-  <h1>Users</h1>
+    <h1>Users</h1>
 
     <ul>
-      {% for user_id in user_mapping %}
+      {% for user_id in user_mapping %} {# FIXME: for user in users #}
+
+        {# FIXME: user.id    and    user.get_full_name #}
         <li><a href="/users/{{ user_id }}">{{ user_mapping[user_id] }}</a></li>
       {% endfor %}
     </ul>
@@ -15,7 +17,6 @@
         Add user
     </a>
 
-  </form>
 
 {% endblock %}
 

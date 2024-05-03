@@ -26,11 +26,11 @@ class User(db.Model):
     )
 
     image_url = db.mapped_column(
-        db.String(200)
-    )
+        db.String(1000),
+    ) # TODO: add default and null=false
 
     def get_full_name(self):
         """ Get the first name and last name of user """
 
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.first_name} {self.last_name}" # TODO: make into property
 
