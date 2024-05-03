@@ -237,4 +237,4 @@ def delete_post(post_id):
 
     db.session.commit()
 
-    return redirect("/users") # TODO: redirect to the exact user from the post
+    return redirect(f"/users/{post.user_id}")
