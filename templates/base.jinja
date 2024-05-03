@@ -16,8 +16,10 @@
 <body>
 
 {% for msg in get_flashed_messages() %}
+
+  {# Little bug, if you dismiss one alert, they *all* get dismissed #}
   <div class="alert alert-dismissible alert-danger">
-    <a href="/">
+    <a href="{{ current_page }}">
       <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </a>
       {{ msg }}
