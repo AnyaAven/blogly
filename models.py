@@ -88,8 +88,9 @@ class Post(db.Model):
         back_populates="posts"
     )
 
+    #Used from solution
     @property
     def friendly_date(self):
-        """Return nicely-formatted date."""
+        """ Return nicely-formatted date."""
 
         return self.created_at.strftime("%a %b %-d  %Y, %-I:%M %p")
