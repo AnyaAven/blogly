@@ -9,7 +9,7 @@
 
         <div class="row">
             <div>
-                <img src="{{ user_image }}" alt="{{ user_full_name }}'s profile picture" class="img-thumbnail">
+                <img src="{{ user.image_url }}" alt="{{ user.get_full_name() }}'s profile picture" class="img-thumbnail">
                 <h1 class="pt-4 mb-3 text-center">{{ user_full_name }}</h1>
             </div>
 
@@ -17,14 +17,14 @@
                 <button
                 class="btn btn-primary btn-lg w-100"
                 formmethod="GET"
-                formaction="/users/{{ user_id }}/edit">
+                formaction="/users/{{ user.id }}/edit">
                     Edit
                 </button>
 
                 <button
                 class="btn btn-primary btn-lg w-100"
                 formmethod="POST"
-                formaction="/users/{{ user_id }}/delete">
+                formaction="/users/{{ user.id }}/delete">
                     Delete
                 </button>
             </form>
