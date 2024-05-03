@@ -64,6 +64,21 @@ class Post(db.Model):
         nullable=False,
     )
 
+    created_at = db.mapped_column(
+        db.DateTime(timezone=True),
+        nullable=False,
+    ) # TODO: Does this work as expected?
+
+    id = db.mapped_column(
+        db.Integer,
+        db.ForeignKey(
+            "users.id",
+            ondelete="CASCADE",
+            onupdate="CASCADE",
+            nullable=False
+        )
+    )
+
     user = db.relationship(
         "User",
         back_populates="post"

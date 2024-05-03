@@ -5,10 +5,9 @@
     <h1>Users</h1>
 
     <ul>
-      {% for user_id in user_mapping %} {# FIXME: for user in users #}
+      {% for user in users %}
 
-        {# FIXME: user.id    and    user.get_full_name #}
-        <li><a href="/users/{{ user_id }}">{{ user_mapping[user_id] }}</a></li>
+        <li><a href="/users/{{ user.id }}">{{ user.get_full_name() }}</a></li>
       {% endfor %}
     </ul>
 
