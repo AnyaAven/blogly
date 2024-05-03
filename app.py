@@ -5,7 +5,7 @@ import os
 from flask import Flask, request, redirect, render_template
 from flask_debugtoolbar import DebugToolbarExtension
 
-from models import db, dbx, User
+from models import db, dbx, User, Post
 
 DEFAULT_URL = "https://via.placeholder.com/250"  # TODO: Move to user model
 
@@ -146,3 +146,24 @@ def delete_user(user_id):
     db.session.commit()
 
     return redirect("/users")
+
+
+@app.get("/users/<int:user_id>/posts/new")
+def show_new_post_form(user_id):
+    """Show the new post form for a user."""
+
+    return render_template("new_post_form.jinja", user_id=user_id)
+
+
+@app.post("/users/<int:user_id>/posts/new")
+def add_new_post(user_id):
+    """ Adds new post to the DB and displays it under the user detail page """
+    title = request.form['title']
+    content = request.form['content']
+
+    new_post = Post(title=title, content=content)
+
+    db.session.add(new_post)
+    db.session.commit()
+
+    return redirect(f"/users/{user_id}")
