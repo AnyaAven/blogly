@@ -118,7 +118,7 @@ def edit_user(user_id):
     user.last_name = last_name
     user.image_url = img_url
 
-    db.session.add(user) # TODO: Why did this work without this line?
+    # db.session.add(user) # TODO: Why did this work without this line? Why do we need this line?
     db.session.commit()
 
     return redirect("/users")
@@ -223,7 +223,7 @@ def edit_post(post_id):
     # update the DB with updated post info
     post.title = editted_title
     post.content = editted_content
-    db.session.add(post)
+
     db.session.commit()
 
     return redirect(f"/users/{user.id}")
@@ -233,6 +233,7 @@ def delete_post(post_id):
     """ Delete post from DB """
 
     post = db.get_or_404(Post, post_id)
+    flash("Deleted post")
     db.session.delete(post)
 
     db.session.commit()
