@@ -1,11 +1,15 @@
 """Models for Blogly."""
 
+import datetime
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 dbx = db.session.execute
 
+DEFAULT_IMAGE_URL = "https://via.placeholder.com/250"
+
 class User(db.Model):
+    """ User class """
 
     __tablename__ = "users"
 
@@ -26,12 +30,14 @@ class User(db.Model):
     )
 
     image_url = db.mapped_column(
-        db.String(1000),
-    ) # TODO: add default and null=false
+        db.String(2048),
+        default=DEFAULT_IMAGE_URL,
+        nullable=False
+    )
 
-    post = db.relationship(
+    posts = db.relationship(
         "Post",
-        back_populates="User",
+        back_populates="user",
         cascade="all, delete-orphan"
         )
 
@@ -45,6 +51,7 @@ class User(db.Model):
 
 
 class Post(db.Model):
+    """ Blog post """
 
     __tablename__ = "posts"
 
@@ -65,21 +72,24 @@ class Post(db.Model):
     )
 
     created_at = db.mapped_column(
-        db.DateTime(timezone=True),
+        db.DateTime,
+        default=datetime.datetime.now,
         nullable=False,
     ) # TODO: Does this work as expected?
 
-    id = db.mapped_column(
+    user_id = db.mapped_column(
         db.Integer,
-        db.ForeignKey(
-            "users.id",
-            ondelete="CASCADE",
-            onupdate="CASCADE",
-            nullable=False
-        )
+        db.ForeignKey("users.id",ondelete="CASCADE", onupdate="CASCADE"),
+        nullable=False
     )
 
     user = db.relationship(
         "User",
-        back_populates="post"
+        back_populates="posts"
     )
+
+    @property
+    def friendly_date(self):
+        """Return nicely-formatted date."""
+
+        return self.created_at.strftime("%a %b %-d  %Y, %-I:%M %p")
