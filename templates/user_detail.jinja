@@ -1,6 +1,6 @@
 {% extends 'base.jinja' %}
 
-{% block title %} Edit {{ user_full_name }} {% endblock %}
+{% block title %} Edit {{ user.get_full_name() }} {% endblock %}
 
 {% block content %}
 
@@ -10,7 +10,7 @@
         <div class="row">
             <div>
                 <img src="{{ user.image_url }}" alt="{{ user.get_full_name() }}'s profile picture" class="img-thumbnail">
-                <h1 class="pt-4 mb-3 text-center">{{ user_full_name }}</h1>
+                <h1 class="pt-4 mb-3 text-center">{{ user.get_full_name() }}</h1>
             </div>
 
             <form > {# Here's a way to add a form method and action to a button to handle multiple routes #}
