@@ -8,6 +8,7 @@ dbx = db.session.execute
 
 DEFAULT_IMAGE_URL = "https://via.placeholder.com/250"
 
+
 class User(db.Model):
     """ User class """
 
@@ -39,15 +40,13 @@ class User(db.Model):
         "Post",
         back_populates="user",
         cascade="all, delete-orphan"
-        )
-
+    )
 
     def get_full_name(self):
         """ Get the first name and last name of user """
 
-        return f"{self.first_name} {self.last_name}" # TODO: make into property
-
-
+        # TODO: make into property
+        return f"{self.first_name} {self.last_name}"
 
 
 class Post(db.Model):
@@ -75,11 +74,11 @@ class Post(db.Model):
         db.DateTime,
         default=datetime.datetime.now,
         nullable=False,
-    ) # TODO: Does this work as expected?
+    )  # TODO: Does this work as expected?
 
     user_id = db.mapped_column(
         db.Integer,
-        db.ForeignKey("users.id",ondelete="CASCADE", onupdate="CASCADE"),
+        db.ForeignKey("users.id", ondelete="CASCADE", onupdate="CASCADE"),
         nullable=False
     )
 
@@ -88,7 +87,7 @@ class Post(db.Model):
         back_populates="posts"
     )
 
-    #Used from solution
+    # Used from solution
     @property
     def friendly_date(self):
         """ Return nicely-formatted date."""
