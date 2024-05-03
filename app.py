@@ -7,8 +7,6 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from models import db, dbx, User, Post
 
-DEFAULT_URL = "https://via.placeholder.com/250"  # TODO: Move to user model
-
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     "DATABASE_URL", 'postgresql:///blogly')
@@ -62,7 +60,7 @@ def add_user():
     lname = request.form['last_name']
 
     # Use user's image url or the default img url
-    img_url = request.form["image_url"] or DEFAULT_URL
+    img_url = request.form["image_url"] or None # FIXME: does this work as intended?
 
     new_user = User(first_name=fname, last_name=lname, image_url=img_url)
 
@@ -74,15 +72,18 @@ def add_user():
 
 @app.get("/users/<int:user_id>")
 def show_user(user_id):
-    """Shows information about the given user"""
+    """ Show information about the user and their posts """
 
     # Note: WHAT IF we don't have a user id of 99? use 404!
     user = db.get_or_404(User, user_id)
 
+    posts = user.posts
+
     # Note: You can pass in the user instance to jinja instead and use the attributes
     return render_template(
         "user_detail.jinja",
-        user=user
+        user=user,
+        posts=posts
     )
 
 
@@ -141,6 +142,8 @@ def delete_user(user_id):
     return redirect("/users")
 
 
+""" *********************** POSTS ****************************************** """
+
 @app.get("/users/<int:user_id>/posts/new")
 def show_new_post_form(user_id):
     """Show the new post form for a user."""
@@ -153,8 +156,8 @@ def add_new_post(user_id):
     """ Adds new post to the DB and displays it under the user detail page """
     title = request.form['title']
     content = request.form['content']
-
-    new_post = Post(title=title, content=content)
+    # TODO: What if we didn't add anything as title or content?
+    new_post = Post(title=title, content=content, user_id=user_id)
 
     db.session.add(new_post)
     db.session.commit()
