@@ -86,7 +86,6 @@ def show_user(user_id):
         posts=posts
     )
 
-
 @app.get("/users/<int:user_id>/edit")
 def show_edit_user_form(user_id):
     """Show the edit page for a user."""
