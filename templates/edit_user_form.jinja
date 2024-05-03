@@ -8,16 +8,17 @@
   <h1 class="pt-4 mb-3 text-center">Edit a user</h1>
 
   <div class="ms-3 me-3">
-    <form action="/users/{{ user_id }}/edit" method="post" class="pb-4">
+    <form action="/users/{{ user.id }}/edit" method="post" class="pb-4">
 
-        {# FIXME: Can prepopulate the values using the user's current data #}
+        {#Note: Can prepopulate the values using the user's current data #}
       <div class="mb-3 row">
         <label class="col-5 col-form-label text-end">First Name</label>
         <div class="col-7">
             <input
             name="first_name"
             aria-label="first_name"
-            class="form-control">
+            class="form-control"
+            value="{{ user.first_name }}">
 
         </div>
 
@@ -26,7 +27,8 @@
             <input
             name="last_name"
             aria-label="last_name"
-            class="form-control">
+            class="form-control"
+            value="{{ user.last_name }}">
 
         </div>
 
@@ -35,7 +37,8 @@
             <input
             name="image_url"
             aria-label="image_url"
-            class="form-control">
+            class="form-control"
+            value="{{ user.image_name }}">
 
         </div>
 
