@@ -1,0 +1,46 @@
+{% extends 'base.jinja' %}
+
+{% block title %} Add a Post {% endblock %}
+
+{% block content %}
+
+  <!-- Test comment for new_post_form -->
+  <h1 class="pt-4 mb-3 text-center">Add a Post</h1>
+
+  <div class="ms-3 me-3">
+    <form action="/users/<int:user_id>/posts/new" method="POST" class="pb-4">
+
+      <div class="mb-3 row">
+
+        <label class="col-5 col-form-label text-end">Title</label>
+        <div class="col-7">
+            <input
+            name="title"
+            required
+            aria-label="title"
+            class="form-control"> {# Aria-label -> alt for fields #}
+
+        </div>
+
+         <label class="col-5 col-form-label text-end">Post Content</label>
+        <div class="col-7">
+            <input
+            name="content"
+            required
+            aria-label="content"
+            class="form-control">
+
+        </div>
+
+      </div>
+
+    <a href="/users/<int:user_id>" class="btn btn-primary btn-lg w-100">
+        Cancel
+      </a>
+      <button class="btn btn-primary btn-lg w-100">
+        Add
+      </button>
+    </form>
+  </div>
+
+{% endblock %}
