@@ -65,6 +65,7 @@ def add_user():
     new_user = User(first_name=fname, last_name=lname, image_url=img_url)
 
     db.session.add(new_user)
+    flash(f"New user added: {new_user.get_full_name()}")
     db.session.commit()
 
     return redirect("/users")
@@ -77,13 +78,10 @@ def show_user(user_id):
     # Note: WHAT IF we don't have a user id of 99? use 404!
     user = db.get_or_404(User, user_id)
 
-    posts = user.posts
-
     # Note: You can pass in the user instance to jinja instead and use the attributes
     return render_template(
         "user_detail.jinja",
-        user=user,
-        posts=posts
+        user=user
     )
 
 @app.get("/users/<int:user_id>/edit")
@@ -119,6 +117,8 @@ def edit_user(user_id):
     user.first_name = first_name
     user.last_name = last_name
     user.image_url = img_url
+
+    db.session.add(user) # TODO: Why did this work without this line?
     db.session.commit()
 
     return redirect("/users")
@@ -177,6 +177,7 @@ def add_new_post(user_id):
     new_post = Post(title=title, content=content, user_id=user_id)
 
     db.session.add(new_post)
+    flash(f"Post {new_post.title} added.")
     db.session.commit()
 
     return redirect(f"/users/{user_id}")
@@ -195,3 +196,45 @@ def display_post(post_id):
         user=user,
         post=post
     )
+
+@app.get("/posts/<int:post_id>/edit")
+def show_edit_post(post_id):
+    """ Edit the post and update DB """
+
+    post = db.get_or_404(Post, post_id)
+    user = post.user
+
+    return render_template(
+        "edit_post_form.jinja",
+        user=user,
+        post=post
+    )
+
+@app.post("/posts/<int:post_id>/edit")
+def edit_post(post_id):
+    """ Edit the post and update DB """
+
+    post = db.get_or_404(Post, post_id)
+    user = post.user
+
+    editted_title = request.form["title"]
+    editted_content = request.form["content"]
+
+    # update the DB with updated post info
+    post.title = editted_title
+    post.content = editted_content
+    db.session.add(post)
+    db.session.commit()
+
+    return redirect(f"/users/{user.id}")
+
+@app.post("/posts/<int:post_id>/delete")
+def delete_post(post_id):
+    """ Delete post from DB """
+
+    post = db.get_or_404(Post, post_id)
+    db.session.delete(post)
+
+    db.session.commit()
+
+    return redirect("/users") # TODO: redirect to the exact user from the post
