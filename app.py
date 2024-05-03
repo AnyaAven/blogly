@@ -2,7 +2,7 @@
 
 import os
 
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, flash
 from flask_debugtoolbar import DebugToolbarExtension
 
 from models import db, dbx, User, Post
@@ -53,7 +53,7 @@ def display_new_user_form():
 @app.post("/users/new")
 def add_user():
     """ Add new user to the database and redirect to /users
-    If user does not provide a image url, add a default url image #FIXME: Move default url to models
+    If user does not provide a image url, add a default url image
     """
 
     fname = request.form['first_name']
@@ -155,10 +155,43 @@ def add_new_post(user_id):
     """ Adds new post to the DB and displays it under the user detail page """
     title = request.form['title']
     content = request.form['content']
-    # TODO: What if we didn't add anything as title or content?
+
+    errs = []
+    if not title:
+        errs.append("You need a title to post")
+    if not content:
+        errs.append("You need content for your post")
+
+    if errs:
+        for err in errs:
+            flash(err)
+
+        route =  f"/users/{user_id}/posts/new"
+        return render_template(
+            "new_post_form.jinja",
+            user_id=user_id,
+            current_page=route
+        )
+
+
     new_post = Post(title=title, content=content, user_id=user_id)
 
     db.session.add(new_post)
     db.session.commit()
 
     return redirect(f"/users/{user_id}")
+
+@app.get("/posts/<int:post_id>")
+def display_post(post_id):
+    """ Display the post """
+    # TODO: Does this work? Need to pass the user inst and post inst
+
+    post = db.get_or_404(Post, post_id)
+
+    user = post.user
+
+    return render_template(
+        "post_detail.jinja",
+        user=user,
+        post=post
+    )
