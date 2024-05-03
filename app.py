@@ -83,24 +83,13 @@ def add_user():
 def show_user(user_id):
     """Shows information about the given user"""
 
-    # FIXME: WHAT IF we don't have a user id of 99?
-    # db.get_or_404 instead of line 90 and 92
+    # Note: WHAT IF we don't have a user id of 99? use 404!
+    user = db.get_or_404(User, user_id)
 
-    # search for the user instance by id
-    q_user = db.select(User).where(User.id == user_id)
-
-    user_detail = dbx(q_user).scalars().one()
-    # send the info to user_detail page
-    user_full_name = user_detail.get_full_name()
-    user_image = user_detail.image_url
-    user_id = user_detail.id
-
-    # FIXME: You can pass in the user instance to jinja instead and use the attributes
+    # Note: You can pass in the user instance to jinja instead and use the attributes
     return render_template(
         "user_detail.jinja",
-        user_full_name=user_full_name,
-        user_image=user_image,
-        user_id=user_id
+        user=user
     )
 
 
@@ -108,21 +97,19 @@ def show_user(user_id):
 def show_edit_user_form(user_id):
     """Show the edit page for a user."""
 
-    # TODO: Can pre populate the form with the user's current information
-    # This will create a better UX
+    user = db.get_or_404(User, user_id)
 
     return render_template(
         "edit_user_form.jinja",
-        user_id=user_id
+        user=user
     )
 
 
 @app.post("/users/<int:user_id>/edit")
 def edit_user(user_id):
-    """Get values from user inputs from edit user form.""" # FIXME: make this clearer, we are changing the db.
-    # FIXME: db.get_or_404
-    q_user = db.select(User).where(User.id == user_id)
-    user_detail = dbx(q_user).scalars().one()
+    """Get values from user inputs from edit user form and changing the DB."""
+
+    user = db.get_or_404(User, user_id)
 
     # This is similar to a patch request
     # This doesn't allow us to ever remove our image, populate it at this function instead
@@ -131,14 +118,14 @@ def edit_user(user_id):
     # Then remove the or on lines 134, 134, and 136
 
     # if value is blank, leave as is
-    first_name = request.form["first_name"] or user_detail.first_name
-    last_name = request.form["last_name"] or user_detail.last_name
-    img_url = request.form["image_url"] or user_detail.image_url
+    first_name = request.form["first_name"]
+    last_name = request.form["last_name"]
+    img_url = request.form["image_url"]
 
     # update the DB with updated user info
-    user_detail.first_name = first_name
-    user_detail.last_name = last_name
-    user_detail.image_url = img_url
+    user.first_name = first_name
+    user.last_name = last_name
+    user.image_url = img_url
     db.session.commit()
 
     return redirect("/users")
